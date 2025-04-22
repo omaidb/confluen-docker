@@ -1,4 +1,4 @@
-version: "3.4" # 定义 Docker Compose 文件的版本
+
 services: # 定义服务
   confluence: # 定义 confluence 服务
     #  8.5.19 长期维护版本
