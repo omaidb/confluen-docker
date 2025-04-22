@@ -1,8 +1,7 @@
-version: '3.4' # 定义 Docker Compose 文件的版本
-
+version: "3.4" # 定义 Docker Compose 文件的版本
 services: # 定义服务
   confluence: # 定义 confluence 服务
-    image: haxqer/confluence:9.2.1 # 使用的镜像及其版本
+    image: omaidb/confluence:9.2.1 # 使用的镜像及其版本
     container_name: confluence-srv # 容器名称
     environment: # 设置环境变量
       - TZ=Asia/Shanghai # 设置时区为上海
@@ -18,30 +17,37 @@ services: # 定义服务
     restart: always # 设置容器始终重启策略
     networks: # 指定网络
       - network-bridge # 使用 network-bridge 网络
-
-  mysql: # 定义 mysql 服务
-    image: mysql:8.0 # 使用的镜像及其版本
-    container_name: mysql-confluence # 容器名称
-    environment: # 设置环境变量
+  postgres: # 定义名为 postgres 的服务
+    image: postgres:15.4 # 使用 postgres 15.4 版本的镜像
+    container_name: pg-confluence # 容器名称
+    healthcheck: # 健康检查配置
+      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root"] # 检查 PostgreSQL 服务是否可用
+      timeout: 45s # 健康检查的超时时间为 45 秒
+      interval: 10s # 健康检查的间隔时间为 10 秒
+      retries: 10 # 健康检查失败后重试的次数为 10 次
+    
+    environment: # 定义环境变量
       - TZ=Asia/Shanghai # 设置时区为上海
-      - MYSQL_DATABASE=confluence # 设置数据库名称为 confluence
-      - MYSQL_ROOT_PASSWORD=123456 # 设置 root 用户的密码
-      - MYSQL_USER=confluence # 设置普通用户名称为 confluence
-      - MYSQL_PASSWORD=123123 # 设置普通用户的密码
-    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_bin', '--transaction-isolation=READ-COMMITTED', '--innodb_log_file_size=256M', '--max_allowed_packet=256M','--log_bin_trust_function_creators=1'] 
-    # 配置 MySQL 启动命令及参数
+      - POSTGRES_USER=root # PostgreSQL 的默认用户名为 root
+      - POSTGRES_PASSWORD=123456 # PostgreSQL 的默认密码为 123456
+      - APP_DB_USER=confluence # 应用程序的数据库用户名为 confluence
+      - APP_DB_PASS=123456 # 应用程序的数据库密码为 123456
+      - APP_DB_NAME=confluence # 应用程序的数据库名称为 confluence
     volumes: # 定义数据卷
-      - mysql_data:/var/lib/mysql # 将数据卷挂载到容器的 /var/lib/mysql 目录
-    restart: always # 设置容器始终重启策略
+      # - ./db:/docker-entrypoint-initdb.d/ # 将本地 ./db 目录挂载到容器的 /docker-entrypoint-initdb.d/ 目录
+      - postgres_data:/var/lib/postgresql/data # 将本地 /data/postgres 目录挂载到容器的 /var/lib/postgresql/data 目录
+    ports: # 定义端口映射
+      - 5432:5432 # 将本地的 5432 端口映射到容器的 5432 端口
+    restart: always # 服务失败时总是重启
     networks: # 指定网络
       - network-bridge # 使用 network-bridge 网络
 
 networks: # 定义网络
   network-bridge: # 定义名为 network-bridge 的网络
     driver: bridge # 使用 bridge 驱动
-
+    
 volumes: # 定义数据卷
   home_data: # 定义名为 home_data 的数据卷
     external: false # 数据卷为内部创建
-  mysql_data: # 定义名为 mysql_data 的数据卷
+  postgres_data: # 定义名为 postgres_data 的数据卷
     external: false # 数据卷为内部创建

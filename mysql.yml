@@ -1,0 +1,33 @@
+mysql: # 定义 mysql 服务
+    image: mysql:8.0 # 使用的镜像及其版本
+    container_name: mysql-confluence # 容器名称
+    environment: # 设置环境变量
+      - TZ=Asia/Shanghai # 设置时区为上海
+      - MYSQL_DATABASE=confluence # 设置数据库名称为 confluence
+      - MYSQL_ROOT_PASSWORD=123456 # 设置 root 用户的密码
+      - MYSQL_USER=confluence # 设置普通用户名称为 confluence
+      - MYSQL_PASSWORD=123123 # 设置普通用户的密码
+
+    command:
+      # - 'mysqld'                                    # 启动 MySQL 服务器进程
+      # - '--character-set-server=utf8mb4'            # 设置服务器默认字符集为 utf8mb4 (支持完整Unicode，包括Emoji)
+      # - '--collation-server=utf8mb4_bin'            # 设置服务器默认排序规则为 utf8mb4_bin (二进制排序，区分大小写)
+      # - '--transaction-isolation=READ-COMMITTED'    # 设置默认事务隔离级别为 READ-COMMITTED (读已提交)
+      # - '--innodb_log_file_size=256M'               # 设置 InnoDB 重做日志文件的大小为 256MB
+      # - '--max_allowed_packet=256M'                 # 设置服务器允许接收的最大数据包大小为 256MB
+      # - '--log_bin_trust_function_creators=1'       # 当二进制日志(binlog)启用时，允许创建存储函数/触发器而无需 SUPER 权限 (1=允许)
+      [
+        "mysqld",
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_bin",
+        "--transaction-isolation=READ-COMMITTED",
+        "--innodb_log_file_size=256M",
+        "--max_allowed_packet=256M",
+        "--log_bin_trust_function_creators=1",
+      ]
+    # 配置 MySQL 启动命令及参数
+    volumes: # 定义数据卷
+      - mysql_data:/var/lib/mysql # 将数据卷挂载到容器的 /var/lib/mysql 目录
+    restart: always # 设置容器始终重启策略
+    networks: # 指定网络
+      - network-bridge # 使用 network-bridge 网络
