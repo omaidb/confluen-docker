@@ -1,45 +1,47 @@
-version: '3.4'
-services:
-  confluence:
-    image: haxqer/confluence:9.2.1
-    container_name: confluence-srv
-    environment:
-      - TZ=Asia/Shanghai
-    #      - JVM_MINIMUM_MEMORY=1g
-    #      - JVM_MAXIMUM_MEMORY=12g
-    #      - JVM_CODE_CACHE_ARGS='-XX:InitialCodeCacheSize=1g -XX:ReservedCodeCacheSize=8g'
-    depends_on:
-      - mysql
-    ports:
-      - "8090:8090"
-    volumes:
-      - home_data:/var/confluence
-    restart: always
-    networks:
-      - network-bridge
+version: '3.4' # 定义 Docker Compose 文件的版本
 
-  mysql:
-    image: mysql:8.0
-    container_name: mysql-confluence
-    environment:
-      - TZ=Asia/Shanghai
-      - MYSQL_DATABASE=confluence
-      - MYSQL_ROOT_PASSWORD=123456
-      - MYSQL_USER=confluence
-      - MYSQL_PASSWORD=123123
-    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_bin', '--transaction-isolation=READ-COMMITTED', '--innodb_log_file_size=256M', '--max_allowed_packet=256M','--log_bin_trust_function_creators=1']
-    volumes:
-      - mysql_data:/var/lib/mysql
-    restart: always
-    networks:
-      - network-bridge
+services: # 定义服务
+  confluence: # 定义 confluence 服务
+    image: haxqer/confluence:9.2.1 # 使用的镜像及其版本
+    container_name: confluence-srv # 容器名称
+    environment: # 设置环境变量
+      - TZ=Asia/Shanghai # 设置时区为上海
+    #      - JVM_MINIMUM_MEMORY=1g # JVM 最小内存
+    #      - JVM_MAXIMUM_MEMORY=12g # JVM 最大内存
+    #      - JVM_CODE_CACHE_ARGS='-XX:InitialCodeCacheSize=1g -XX:ReservedCodeCacheSize=8g' # JVM 代码缓存参数
+    depends_on: # 定义服务依赖
+      - mysql # 依赖 mysql 服务
+    ports: # 映射端口
+      - "8090:8090" # 将宿主机的 8090 端口映射到容器的 8090 端口
+    volumes: # 定义数据卷
+      - home_data:/var/confluence # 将数据卷挂载到容器的 /var/confluence 目录
+    restart: always # 设置容器始终重启策略
+    networks: # 指定网络
+      - network-bridge # 使用 network-bridge 网络
 
-networks:
-  network-bridge:
-    driver: bridge
+  mysql: # 定义 mysql 服务
+    image: mysql:8.0 # 使用的镜像及其版本
+    container_name: mysql-confluence # 容器名称
+    environment: # 设置环境变量
+      - TZ=Asia/Shanghai # 设置时区为上海
+      - MYSQL_DATABASE=confluence # 设置数据库名称为 confluence
+      - MYSQL_ROOT_PASSWORD=123456 # 设置 root 用户的密码
+      - MYSQL_USER=confluence # 设置普通用户名称为 confluence
+      - MYSQL_PASSWORD=123123 # 设置普通用户的密码
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_bin', '--transaction-isolation=READ-COMMITTED', '--innodb_log_file_size=256M', '--max_allowed_packet=256M','--log_bin_trust_function_creators=1'] 
+    # 配置 MySQL 启动命令及参数
+    volumes: # 定义数据卷
+      - mysql_data:/var/lib/mysql # 将数据卷挂载到容器的 /var/lib/mysql 目录
+    restart: always # 设置容器始终重启策略
+    networks: # 指定网络
+      - network-bridge # 使用 network-bridge 网络
 
-volumes:
-  home_data:
-    external: false
-  mysql_data:
-    external: false
+networks: # 定义网络
+  network-bridge: # 定义名为 network-bridge 的网络
+    driver: bridge # 使用 bridge 驱动
+
+volumes: # 定义数据卷
+  home_data: # 定义名为 home_data 的数据卷
+    external: false # 数据卷为内部创建
+  mysql_data: # 定义名为 mysql_data 的数据卷
+    external: false # 数据卷为内部创建
