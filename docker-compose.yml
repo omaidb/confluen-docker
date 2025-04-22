@@ -27,14 +27,13 @@ services: # 定义服务
     image: postgres:15.10 # 使用 postgres 15.10 长期支持版本的镜像
     # image: postgres:15.10-alpine3.19 # 使用 postgres 15.10 长期支持版本的镜像
     container_name: postgres-confluence # 容器名称
-    healthcheck: # 健康检查配置
-      test: ["CMD", "pg_isready", "-q", "-d", "confluence", "-U", "confluence"] # 检查 PostgreSQL 服务是否可用
-      timeout: 45s # 健康检查的超时时间为 45 秒
-      interval: 10s # 健康检查的间隔时间为 10 秒
-      retries: 10 # 健康检查失败后重试的次数为 10 次
+    # healthcheck: # 健康检查配置
+    #   test: ["CMD", "pg_isready", "-q", "-d", "confluence", "-U", "confluence"] # 检查 PostgreSQL 服务是否可用
+    #   timeout: 45s # 健康检查的超时时间为 45 秒
+    #   interval: 10s # 健康检查的间隔时间为 10 秒
+    #   retries: 10 # 健康检查失败后重试的次数为 10 次
     
     environment: # 定义环境变量
-      - LANG=zh_CN.UTF-8 # 设置语言为中文
       - TZ=Asia/Shanghai # 设置时区为上海
       - POSTGRES_USER=confluence # PostgreSQL 的默认用户名为 root
       - POSTGRES_PASSWORD=123456 # PostgreSQL 的默认密码为 123456
