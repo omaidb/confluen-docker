@@ -34,11 +34,9 @@ services: # 定义服务
     
     environment: # 定义环境变量
       - TZ=Asia/Shanghai # 设置时区为上海
-      - POSTGRES_USER=root # PostgreSQL 的默认用户名为 root
+      - POSTGRES_USER=confluence # PostgreSQL 的默认用户名为 root
       - POSTGRES_PASSWORD=123456 # PostgreSQL 的默认密码为 123456
-      - APP_DB_USER=confluence # 应用程序的数据库用户名为 confluence
-      - APP_DB_PASS=123456 # 应用程序的数据库密码为 123456
-      - APP_DB_NAME=confluence # 应用程序的数据库名称为 confluence
+      - POSTGRES_DB=confluence # PostgreSQL 的默认数据库名称为 confluence
     volumes: # 定义数据卷
       # - ./db:/docker-entrypoint-initdb.d/ # 将本地 ./db 目录挂载到容器的 /docker-entrypoint-initdb.d/ 目录
       - postgres_data:/var/lib/postgresql/data # 将本地 /data/postgres 目录挂载到容器的 /var/lib/postgresql/data 目录
