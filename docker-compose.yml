@@ -24,7 +24,7 @@ services: # 定义服务
 
   # 定义名为 postgres 的服务
   postgres: 
-    image: postgres:15.4 # 使用 postgres 15.4 版本的镜像
+    image: postgres:15.10 # 使用 postgres 15.10 长期支持版本的镜像
     container_name: postgres-confluence # 容器名称
     healthcheck: # 健康检查配置
       test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root"] # 检查 PostgreSQL 服务是否可用
