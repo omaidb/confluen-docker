@@ -93,7 +93,7 @@ docker exec confluence-srv java -jar /var/agent/atlassian-agent.jar \
 4. 最后粘贴生成的 licence
 
 
-## How to upgrade
+## 升级
 
 ```shell
 cd confluence && git pull
