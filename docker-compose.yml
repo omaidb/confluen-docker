@@ -38,6 +38,9 @@ services: # 定义服务
       - POSTGRES_USER=confluence # PostgreSQL 的默认用户名为 root
       - POSTGRES_PASSWORD=123456 # PostgreSQL 的默认密码为 123456
       - POSTGRES_DB=confluence # PostgreSQL 的默认数据库名称为 confluence
+      - POSTGRES_ENCODING=UTF8 # PostgreSQL 的默认编码为 UTF8
+      - POSTGRES_COLLATION=en_US.utf8 # 设置数据库的字符集和排序规则
+      # - POSTGRES_INITDB_ARGS="--encoding=UTF8 --locale=en_US.utf8" # 初始化数据库时的参数
     volumes: # 定义数据卷
       # - ./db:/docker-entrypoint-initdb.d/ # 将本地 ./db 目录挂载到容器的 /docker-entrypoint-initdb.d/ 目录
       - postgres_data:/var/lib/postgresql/data # 将本地 /data/postgres 目录挂载到容器的 /var/lib/postgresql/data 目录
