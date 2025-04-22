@@ -1,4 +1,3 @@
-
 services: # 定义服务
   confluence: # 定义 confluence 服务
     #  8.5.19 长期维护版本
@@ -13,7 +12,7 @@ services: # 定义服务
     #      - JVM_CODE_CACHE_ARGS='-XX:InitialCodeCacheSize=1g -XX:ReservedCodeCacheSize=8g' # JVM 代码缓存参数
 
     # 定义服务依赖
-    depends_on: 
+    depends_on:
       - postgres # 依赖 postgres 服务
     ports: # 映射端口
       - "80:8090" # 将宿主机的 8090 端口映射到容器的 8090 端口
@@ -25,7 +24,7 @@ services: # 定义服务
       - network-bridge # 使用 network-bridge 网络
 
   # 定义名为 postgres 的服务
-  postgres: 
+  postgres:
     image: postgres:15.10 # 使用 postgres 15.10 长期支持版本的镜像
     # image: postgres:15.10-alpine3.19 # 使用 postgres 15.10 长期支持版本的镜像
     container_name: postgres-confluence # 容器名称
@@ -34,7 +33,7 @@ services: # 定义服务
     #   timeout: 45s # 健康检查的超时时间为 45 秒
     #   interval: 10s # 健康检查的间隔时间为 10 秒
     #   retries: 10 # 健康检查失败后重试的次数为 10 次
-    
+
     environment: # 定义环境变量
       - TZ=Asia/Shanghai # 设置时区为上海
       - POSTGRES_USER=confluence # PostgreSQL 的默认用户名为 root
