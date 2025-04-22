@@ -1,68 +1,67 @@
 # confluence
 
-
-New Confluence/Jira releases support only Data Center licenses. To generate a Data Center licenses, add the `-d` parameter.
+新的Confluence/Jira版本仅支持数据中心许可证
 
 ---
-Please be sure to upgrade to the latest version(9.2.1 or 8.5.19), as this [bug](https://confluence.atlassian.com/security/cve-2023-22518-improper-authorization-vulnerability-in-confluence-data-center-and-server-1311473907.html).
+请务必升级到最新版(9.2.1 或者 8.5.19)，因为 confluence 的这个 [bug](https://confluence.atlassian.com/security/cve-2023-22518-improper-authorization-vulnerability-in-confluence-data-center-and-server-1311473907.html).
 
-Related issues:
+相关的 issues:
 + [#38](https://github.com/haxqer/confluence/issues/38)
 + [#39](https://github.com/haxqer/confluence/issues/39)
-+ [#46](https://github.com/haxqer/confluence/issues/46) (Thanks to: [pldavid2](https://github.com/pldavid2))
 
 ---
+
 [README](README.md) | [中文文档](README_zh.md)
 
-default port: 8090
+默认端口: 8090
 
-+ Latest Version(arm64&amd64): v8(8.9.8) v9(9.2.1)
-+ LTS Version:(arm64&amd64) v8(8.5.19)
-+ [The new way](https://github.com/haxqer/confluence/tree/build-your-own) of use allows you to conveniently upgrade and modify parameters on your own, and it offers convenient support for HTTPS (thanks to [xsharp](https://github.com/xsharp)).
-+ Latest Chinese Version: [v7](https://github.com/haxqer/confluence/tree/latest-zh) (Thanks to: [sunny1025g](https://github.com/sunny1025g) for the `zh` image. [#issues/16](https://github.com/haxqer/confluence/issues/16) )
++ 最新版本(arm64&amd64): v8(8.9.8) v9(9.2.1)
++ 长期维护的版本(arm64&amd64): v8(8.5.19)
++ [新的使用方式](https://github.com/haxqer/confluence/tree/build-your-own) ，您可方便自行升级、修改各参数，支持https (感谢 [xsharp](https://github.com/xsharp)).
++ 最新的修复中文乱码问题的版本: [v7](https://github.com/haxqer/confluence/tree/latest-zh) (感谢: [sunny1025g](https://github.com/sunny1025g) for the `zh` image. [#issues/16](https://github.com/haxqer/confluence/issues/16) )
 
-## Requirement
+## 环境要求
 - docker-compose: 17.09.0+
 
-## How to run with docker-compose
+## 使用 docker-compose 启动
 
 - start confluence & mysql
 
 ```
-git clone https://github.com/haxqer/confluence.git \
-    && cd confluence \
-    && docker-compose up
+    git clone https://github.com/haxqer/confluence.git \
+        && cd confluence \
+        && docker-compose up
 ```
 
-- start confluence & mysql daemon
+- 以守护进程的方式启动 confluence & mysql
 
 ```
-docker-compose up -d
+    docker-compose up -d
 ```
 
-- default db(mysql8.0) configure:
+- 默认的 数据库(mysql8.0) 配置:
 
 ```bash
-driver=mysql
-host=mysql-confluence
-port=3306
-db=confluence
-user=root
-passwd=123456
+    driver=mysql
+    host=mysql-confluence
+    port=3306
+    db=confluence
+    user=root
+    passwd=123456
 ```
 
-## How to run with docker
+## 使用 docker 启动
 
-- start confluence
+- 启动 confluence
 
 ```
-docker volume create confluence_home_data && docker network create confluence-network && docker run -p 8090:8090 -v confluence_home_data:/var/confluence --network confluence-network --name confluence-srv -e TZ='Asia/Shanghai' haxqer/confluence:9.2.1
+    docker volume create confluence_home_data && docker network create confluence-network && docker run -p 8090:8090 -v confluence_home_data:/var/confluence --network confluence-network --name confluence-srv -e TZ='Asia/Shanghai' haxqer/confluence:9.2.1
 ```
 
-- config your own db:
+- 然后配置你的数据库:
 
 
-## How to hack confluence
+## 破解 confluence
 
 ```
 docker exec confluence-srv java -jar /var/agent/atlassian-agent.jar \
@@ -74,12 +73,12 @@ docker exec confluence-srv java -jar /var/agent/atlassian-agent.jar \
     -s you-server-id-xxxx
 ```
 
-## How to hack confluence plugin
+## 破解 confluence 的插件
 
-- .eg I want to use BigGantt plugin
-1. Install BigGantt from confluence marketplace.
-2. Find `App Key` of BigGantt is : `eu.softwareplant.biggantt`
-3. Execute :
+- 例如: 你想要破解 BigGantt 插件
+1. 从 confluence marketplace 中安装 BigGantt 插件
+2. 查看 BigGantt 的 `App Key` 是 : `eu.softwareplant.biggantt`
+3. 然后执行 :
 
 ```
 docker exec confluence-srv java -jar /var/agent/atlassian-agent.jar \
@@ -91,7 +90,7 @@ docker exec confluence-srv java -jar /var/agent/atlassian-agent.jar \
     -s you-server-id-xxxx
 ```
 
-4. Paste your license
+4. 最后粘贴生成的 licence
 
 
 ## How to upgrade
